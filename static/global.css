@@ -15,7 +15,7 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font: inherit;
+	font-family: 'Roboto Light', sans-serif;
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
@@ -40,4 +40,23 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+h1 {
+	line-height: 1em;
+	font-size: 3em;
+	margin: 1em 0 .25em;
+}
+h2 {
+	line-height: 1em;
+	font-size: 2em;
+	margin: .75em 0 .25em;
+}
+h3 {
+	line-height: 1em;
+	font-size: 1.5em;
+	margin: .5em 0 .25em;
+}
+p {
+	line-height: 1.5em;
+	margin: 0 0 .25em 0;
 }
