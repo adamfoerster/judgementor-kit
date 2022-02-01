@@ -22,3 +22,18 @@ export const doLogout = async () => {
 	}
 	userStore.set(null);
 };
+
+export const doForgotPassword = async (email: string) => {
+	let { error } = await supabase.auth.api.resetPasswordForEmail(email);
+	if (error) {
+		console.log(error);
+	}
+};
+
+export const doResetPassword = async (password: string) => {
+	let { user, error } = await supabase.auth.update({password});
+	if (error) {
+		return console.log(error);
+	}
+	return user;
+}

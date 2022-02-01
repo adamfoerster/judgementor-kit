@@ -18,6 +18,14 @@
 		<link rel="stylesheet" href="%svelte.assets%/global.css" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		%svelte.head%
+		<script>
+			const urlParams = new URLSearchParams(window.location.search);
+			const type = urlParams.get('type');
+			if (window.location.href.includes('&token_type=bearer&type=recovery')) {
+				const token = window.location.href.split('&')[0].split('=')[1];
+				localStorage.setItem('reset-token', token);
+			}
+		</script>
 	</head>
 	<body>
 		<div id="svelte">%svelte.body%</div>

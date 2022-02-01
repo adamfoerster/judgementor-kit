@@ -10,5 +10,9 @@ h1 {
 </style>
 <div id="all-wrapper">
   <h1>Judgementor</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/reset-password">Reset Pass</a>
+  </nav>
   <slot></slot>
 </div>
