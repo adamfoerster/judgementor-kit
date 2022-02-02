@@ -3,14 +3,12 @@
 	import { doResetPassword } from '$lib/user';
 	import { onMount } from 'svelte';
 	import Textfield from '@smui/textfield';
-	import Snackbar, { Actions, SnackbarComponentDev } from '@smui/snackbar';
-	import IconButton from '@smui/icon-button';
-import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
+	import { snackbarStore } from '$lib/store';
 	let token = '';
 	let password = '';
 	let retype = '';
 	let loaded = false;
-	let snackbarWithClose: SnackbarComponentDev;
 
 	onMount(() => {
 		token = localStorage.getItem('reset-token');
@@ -21,17 +19,10 @@ import { goto } from '$app/navigation';
 	const updatePass = async () => {
 		loaded = false;
 		await doResetPassword(password);
-		snackbarWithClose.open();
-    goto('/');
+		snackbarStore.set('Your password was updated.');
+		goto('/');
 	};
 </script>
-
-<Snackbar bind:this={snackbarWithClose}>
-	<Label>Your password was updated.</Label>
-	<Actions>
-		<IconButton class="material-icons" title="Dismiss">close</IconButton>
-	</Actions>
-</Snackbar>
 
 <h2>Update your password</h2>
 {token}
@@ -44,3 +35,4 @@ import { goto } from '$app/navigation';
 		<Label>Update</Label>
 	</Button>
 {/if}
+<Button on:click={() => snackbarStore.set('open')}><Label>Open Sesame</Label></Button>

@@ -2,11 +2,11 @@
 	import Textfield from '@smui/textfield';
 	import Icon from '@smui/textfield/icon';
 	import Button, { Label } from '@smui/button';
-	import Snackbar, { Actions, SnackbarComponentDev } from '@smui/snackbar';
 	import IconButton from '@smui/icon-button';
 	import { doForgotPassword, doLogin, doLogout, userStore } from '$lib/user';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { snackbarStore } from '$lib/store';
 
 	onMount(() => {
 		if (localStorage.getItem('supabase.auth.token')) {
@@ -17,7 +17,6 @@
 		}
 	});
 
-	let snackbarWithClose: SnackbarComponentDev;
 	let email = '';
 	let password = '';
 	let disabled = true;
@@ -34,7 +33,9 @@
 	const forgot = () => {
 		doForgotPassword(email);
 		clear();
-		snackbarWithClose.open();
+		snackbarStore.set(
+			'If your email is associated with an account you will receive a link for the reset.'
+		);
 	};
 
 	$: disabled = !email || !password;
@@ -45,13 +46,6 @@
 		user = value;
 	});
 </script>
-
-<Snackbar bind:this={snackbarWithClose} disabled={!email}>
-	<Label>If your email is associated with an account you will receive a link for the reset.</Label>
-	<Actions>
-		<IconButton class="material-icons" title="Dismiss">close</IconButton>
-	</Actions>
-</Snackbar>
 
 {#if !$userStore}
 	<p>You are not logged.</p>
