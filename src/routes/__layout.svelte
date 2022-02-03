@@ -3,7 +3,7 @@
 	import IconButton from '@smui/icon-button';
 	import Button, { Label } from '@smui/button';
 	import { snackbarStore } from '$lib/store';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	let snackText = '';
   let snackbarWithClose: SnackbarComponentDev;
@@ -35,9 +35,9 @@
 	<nav>
 		<a href="/">Home</a>
 		<a href="/reset-password">Reset Pass</a>
+		<a href="/register">Register</a>
 	</nav>
 	<slot />
-  <Button on:click={() => snackbarWithClose.open()}>ok</Button>
 </div>
 
 <style>

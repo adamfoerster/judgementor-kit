@@ -35,4 +35,3 @@
 		<Label>Update</Label>
 	</Button>
 {/if}
-<Button on:click={() => snackbarStore.set('open')}><Label>Open Sesame</Label></Button>

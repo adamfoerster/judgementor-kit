@@ -31,9 +31,21 @@ export const doForgotPassword = async (email: string) => {
 };
 
 export const doResetPassword = async (password: string) => {
-	let { user, error } = await supabase.auth.update({password});
+	let { user, error } = await supabase.auth.update({ password });
 	if (error) {
 		return console.log(error);
 	}
 	return user;
-}
+};
+
+export const doRegister = async (email: string, password: string) => {
+	let { user, error } = await supabase.auth.signUp({
+		email,
+		password
+	});
+	if (error) {
+		console.log(error);
+	}
+	userStore.set(user);
+	return user;
+};

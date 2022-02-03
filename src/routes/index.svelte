@@ -2,7 +2,6 @@
 	import Textfield from '@smui/textfield';
 	import Icon from '@smui/textfield/icon';
 	import Button, { Label } from '@smui/button';
-	import IconButton from '@smui/icon-button';
 	import { doForgotPassword, doLogin, doLogout, userStore } from '$lib/user';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
