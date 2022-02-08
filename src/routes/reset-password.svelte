@@ -27,11 +27,13 @@
 <h2>Update your password</h2>
 {token}
 {#if loaded}
-	<div class="fields">
+	<div class="fields-center">
 		<Textfield variant="outlined" bind:value={retype} label="Re-enter password" />
 		<Textfield variant="outlined" bind:value={password} label="Password" />
 	</div>
-	<Button on:click={updatePass} variant="raised" disabled={password != retype || !password}>
-		<Label>Update</Label>
-	</Button>
+	<div class="center-line">
+		<Button on:click={updatePass} variant="raised" disabled={password != retype || !password}>
+			<Label>Update</Label>
+		</Button>
+	</div>
 {/if}

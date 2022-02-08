@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Button, { Label } from '@smui/button';
 	import { doRegister } from '$lib/user';
-	import { onMount } from 'svelte';
 	import Textfield from '@smui/textfield';
 	import { goto } from '$app/navigation';
 	import { snackbarStore } from '$lib/store';
@@ -18,11 +17,13 @@
 	};
 </script>
 
-<div class="fields">
+<div class="fields-center">
 	<Textfield variant="outlined" bind:value={email} label="E-Mail" />
 	<Textfield variant="outlined" bind:value={retype} label="Re-enter password" />
 	<Textfield variant="outlined" bind:value={password} label="Password" />
 </div>
-<Button on:click={register} variant="raised" disabled={password != retype || !password || !email}>
-	<Label>Update</Label>
-</Button>
+<div class="center-line">
+	<Button on:click={register} variant="raised" disabled={password != retype || !password || !email}>
+		<Label>Update</Label>
+	</Button>
+</div>
