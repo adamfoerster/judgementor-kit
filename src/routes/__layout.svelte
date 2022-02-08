@@ -1,16 +1,25 @@
 <script lang="ts">
 	import Snackbar, { Actions, SnackbarComponentDev } from '@smui/snackbar';
+	import CircularProgress from '@smui/circular-progress';
+	import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
 	import IconButton from '@smui/icon-button';
 	import Button, { Label } from '@smui/button';
-	import { snackbarStore } from '$lib/store';
+	import { loadingFullScreenStore, snackbarStore } from '$lib/store';
 	import { onMount } from 'svelte';
+	import { getProfile, userStore } from '$lib/user';
 
 	let snackText = '';
-  let snackbarWithClose: SnackbarComponentDev;
-  let snackSub;
-  
-	onMount(() => {
-    console.log('mounted')
+	let snackbarWithClose: SnackbarComponentDev;
+	let snackSub;
+	let loading = false;
+
+	onMount(async () => {
+		if (localStorage.getItem('supabase.auth.token')) {
+			const user = JSON.parse(localStorage.getItem('supabase.auth.token')).currentSession.user;
+			const profile = await getProfile(user.id);
+			userStore.set({ ...user, profile });
+		}
+
 		snackSub = snackbarStore.subscribe((snack) => {
 			console.log(snack);
 			if (snack && snackbarWithClose) {
@@ -20,7 +29,6 @@
 			}
 		});
 	});
-
 </script>
 
 <Snackbar bind:this={snackbarWithClose}>
@@ -31,14 +39,33 @@
 </Snackbar>
 
 <div id="all-wrapper">
-	<h1>Judgementor</h1>
+	<TopAppBar variant="static" color="primary">
+		<Row>
+			<Section>
+				<IconButton class="material-icons">menu</IconButton>
+				<Title>Judgementor</Title>
+			</Section>
+			<Section align="end" toolbar>
+				<IconButton class="material-icons" aria-label="Download">file_download</IconButton>
+				<IconButton class="material-icons" aria-label="Print this page">print</IconButton>
+				<IconButton class="material-icons" aria-label="Bookmark this page">bookmark</IconButton>
+			</Section>
+		</Row>
+	</TopAppBar>
 	<nav>
 		<a href="/">Home</a>
 		<a href="/reset-password">Reset Pass</a>
 		<a href="/register">Register</a>
+		<a href="/profile">Profile</a>
 	</nav>
 	<slot />
 </div>
+
+{#if $loadingFullScreenStore}
+	<div class="loading">
+		<CircularProgress style="height: 32px; width: 32px;" indeterminate />
+	</div>
+{/if}
 
 <style>
 	#all-wrapper {
@@ -46,7 +73,15 @@
 		max-width: 100%;
 		margin: 0 auto;
 	}
-	h1 {
-		text-align: center;
+	.loading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100vh;
+		background-color: rgba(155, 155, 155, 0.5);
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>
