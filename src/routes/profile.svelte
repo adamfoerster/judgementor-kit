@@ -18,7 +18,6 @@ import { onMount } from 'svelte';
 			username,
 			avatar_url
 		});
-		console.log(profile)
 		userStore.set(profile);
 		snackbarStore.set('Profile saved');
 		loadingFullScreenStore.set(false);
@@ -31,10 +30,16 @@ import { onMount } from 'svelte';
 		}
 	});
 </script>
+<style>
+	.avatar img{
+		max-height: 50vh;
+		max-width: 50vw;
+	}
+</style>
 
 {#if loaded && !!$userStore}
 	{#if avatar_url}
-		<div class="center-line">
+		<div class="center-line avatar">
 			<img src={avatar_url} alt={username} />
 		</div>
 	{/if}
