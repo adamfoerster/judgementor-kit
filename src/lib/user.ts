@@ -1,7 +1,19 @@
-import { get, writable } from 'svelte/store';
+import { goto } from '$app/navigation';
+import { derived, get, writable } from 'svelte/store';
 import supabase from './db';
+import { snackbarStore } from './store';
 
 export const userStore = writable(null);
+export const authStateChecked = writable(false);
+
+export const guardRouteOnlyLogged = derived([userStore, authStateChecked], ([user, authStateChecked]) => {
+	if (authStateChecked && !user) {
+		snackbarStore.set("You must be logged in to view this page");
+		goto('/');
+		return false;
+	}
+	return true;
+});
 
 export const doLogin = async (email: string, password: string) => {
 	let { user, error } = await supabase.auth.signIn({
@@ -71,6 +83,14 @@ export const getProfile = async (id) => {
 		console.log(error);
 	}
 	return profiles[0];
+};
+
+export const getProfiles = async () => {
+	const { data: profiles, error } = await supabase.from('profiles').select('*');
+	if (error) {
+		console.log(error);
+	}
+	return profiles;
 };
 
 export interface UserProfile {
