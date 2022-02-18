@@ -4,12 +4,15 @@
 	import Autocomplete from '@smui-extra/autocomplete';
 	import { onMount } from 'svelte';
 	import { loadingFullScreenStore } from '$lib/store';
+	import HelperText from '@smui/textfield/helper-text';
+	import CharacterCounter from '@smui/textfield/character-counter';
 
 	let defendant;
 	let defendantEmail = '';
 	let options = [];
 	let plaintiff;
 	let loaded = false;
+	let brief = '';
 
 	onMount(async () => {
 		loaded = true;
@@ -44,6 +47,10 @@
 			>
 				<Textfield label="Defendant" bind:value={defendantEmail} variant="outlined" />
 			</Autocomplete>
+			<Textfield textarea bind:value={brief} label="Brief">
+				<HelperText slot="helper">Briefly describe your claim</HelperText>
+				<CharacterCounter slot="internalCounter">0 / 1000</CharacterCounter>
+			</Textfield>
 		{/if}
 	</div>
 {/if}

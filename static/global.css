@@ -163,3 +163,7 @@ p {
 	justify-content: center;
 	box-sizing: border-box;
 }
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+  vertical-align: middle;
+}

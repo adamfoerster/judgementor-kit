@@ -59,6 +59,7 @@
 		<a href="/register">Register</a>
 		<a href="/profile">Profile</a>
 		<a href="/cases/new">Open Case</a>
+		<a href="/evidences">Evidences</a>
 	</nav>
 	<slot />
 </div>
