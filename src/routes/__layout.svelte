@@ -6,7 +6,7 @@
 	import Button, { Label } from '@smui/button';
 	import { loadingFullScreenStore, snackbarStore } from '$lib/store';
 	import { onMount } from 'svelte';
-	import { getProfile, userStore } from '$lib/user';
+	import { authStateChecked, getProfile, userStore } from '$lib/user';
 
 	let snackText = '';
 	let snackbarWithClose: SnackbarComponentDev;
@@ -19,9 +19,10 @@
 			const profile = await getProfile(user.id);
 			userStore.set({ ...user, profile });
 		}
+		authStateChecked.set(true)
 
 		snackSub = snackbarStore.subscribe((snack) => {
-			console.log(snack);
+			console.log("snack", snack);
 			if (snack && snackbarWithClose) {
 				snackText = snack;
 				snackbarWithClose.open();
@@ -57,6 +58,7 @@
 		<a href="/reset-password">Reset Pass</a>
 		<a href="/register">Register</a>
 		<a href="/profile">Profile</a>
+		<a href="/cases/new">Open Case</a>
 	</nav>
 	<slot />
 </div>

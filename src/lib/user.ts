@@ -6,14 +6,19 @@ import { snackbarStore } from './store';
 export const userStore = writable(null);
 export const authStateChecked = writable(false);
 
-export const guardRouteOnlyLogged = derived([userStore, authStateChecked], ([user, authStateChecked]) => {
-	if (authStateChecked && !user) {
-		snackbarStore.set("You must be logged in to view this page");
-		goto('/');
-		return false;
+export const guardRouteOnlyLogged = derived(
+	[userStore, authStateChecked],
+	([user, authStateChecked]) => {
+		if (authStateChecked && !user) {
+			snackbarStore.set('You must be logged in to view this page');
+			goto('/');
+			return false;
+		}
+		if (authStateChecked && user) {
+			return user;
+		}
 	}
-	return true;
-});
+);
 
 export const doLogin = async (email: string, password: string) => {
 	let { user, error } = await supabase.auth.signIn({
