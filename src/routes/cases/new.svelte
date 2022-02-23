@@ -6,6 +6,7 @@
 	import { loadingFullScreenStore } from '$lib/store';
 	import HelperText from '@smui/textfield/helper-text';
 	import CharacterCounter from '@smui/textfield/character-counter';
+	import Evidences from '$components/Evidences.svelte';
 
 	let defendant;
 	let defendantEmail = '';
@@ -13,6 +14,7 @@
 	let plaintiff;
 	let loaded = false;
 	let brief = '';
+	let evidences = [];
 
 	onMount(async () => {
 		loaded = true;
@@ -34,6 +36,12 @@
 	$: defendantEmail = defendant ? defendant.email : '';
 </script>
 
+<style>
+	.light-gray {
+		background-color: #ddd;
+	}
+</style>
+
 {#if loaded}
 	<h1>Create a Claim</h1>
 	<p>Plaintiff: {plaintiff?.email}</p>
@@ -47,12 +55,16 @@
 			>
 				<Textfield label="Defendant" bind:value={defendantEmail} variant="outlined" />
 			</Autocomplete>
-			<Textfield textarea bind:value={brief} label="Brief">
+			<Textfield textarea bind:value={brief} label="Brief" input$maxlength={1000}>
 				<HelperText slot="helper">Briefly describe your claim</HelperText>
 				<CharacterCounter slot="internalCounter">0 / 1000</CharacterCounter>
 			</Textfield>
 		{/if}
 	</div>
+	<div class="light-gray">
+		<Evidences bind:evidences={evidences}/>
+	</div>
 {/if}
 <pre>{defendant ? JSON.stringify(defendant) : ''}</pre>
 <pre>{options ? JSON.stringify(options) : ''}</pre>
+<pre>{ JSON.stringify(evidences) }</pre>
