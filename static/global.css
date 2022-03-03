@@ -167,3 +167,8 @@ p {
 .mdc-data-table__cell, .mdc-data-table__header-cell {
   vertical-align: middle;
 }
+
+.mdc-data-table {
+	overflow-x: auto;
+	max-width: 100%;
+}

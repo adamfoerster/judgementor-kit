@@ -12,12 +12,6 @@
 			goto('/reset-password', { replaceState: true });
 		}
 	});
-
-	let user = null;
-	userStore.subscribe((value) => {
-		console.log(value);
-		user = value;
-	});
 </script>
 
 {#if !$userStore}

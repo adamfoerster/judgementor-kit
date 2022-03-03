@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Menu, { MenuComponentDev } from '@smui/menu';
+	import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
 	import Snackbar, { Actions, SnackbarComponentDev } from '@smui/snackbar';
 	import CircularProgress from '@smui/circular-progress';
 	import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
@@ -6,12 +8,13 @@
 	import Button, { Label } from '@smui/button';
 	import { loadingFullScreenStore, snackbarStore } from '$lib/store';
 	import { onMount } from 'svelte';
-	import { authStateChecked, getProfile, userStore } from '$lib/user';
+	import { authStateChecked, doLogout, getProfile, userStore } from '$lib/user';
+	import { goto } from '$app/navigation';
 
 	let snackText = '';
 	let snackbarWithClose: SnackbarComponentDev;
 	let snackSub;
-	let loading = false;
+	let menu: MenuComponentDev;
 
 	onMount(async () => {
 		if (localStorage.getItem('supabase.auth.token')) {
@@ -19,10 +22,10 @@
 			const profile = await getProfile(user.id);
 			userStore.set({ ...user, profile });
 		}
-		authStateChecked.set(true)
+		authStateChecked.set(true);
 
 		snackSub = snackbarStore.subscribe((snack) => {
-			console.log("snack", snack);
+			console.log('snack', snack);
 			if (snack && snackbarWithClose) {
 				snackText = snack;
 				snackbarWithClose.open();
@@ -30,6 +33,10 @@
 			}
 		});
 	});
+
+	const handleGoto = (path: string) => {
+		goto(path);
+	};
 </script>
 
 <Snackbar bind:this={snackbarWithClose}>
@@ -39,11 +46,51 @@
 	</Actions>
 </Snackbar>
 
+<Menu bind:this={menu} anchorCorner="TOP_LEFT">
+	<List twoLine>
+		<Item on:SMUI:action={() => handleGoto('/')}>
+			<Text>Home</Text>
+		</Item>
+		<Separator />
+		{#if $userStore}
+			<Item on:SMUI:action={() => handleGoto('/profile')}>
+				<Text>Profile</Text>
+			</Item>
+		{:else}
+			<Item on:SMUI:action={() => handleGoto('/reset-password')}>
+				<Text>Reset Password</Text>
+			</Item>
+			<Item on:SMUI:action={() => handleGoto('/register')}>
+				<Text>Register</Text>
+			</Item>
+		{/if}
+		<Separator />
+		<Item on:SMUI:action={() => handleGoto('/cases/new')}>
+			<Text>
+				<PrimaryText>File a Claim</PrimaryText>
+				<SecondaryText>Create a new case</SecondaryText>
+			</Text>
+		</Item>
+		<Item on:SMUI:action={() => handleGoto('/evidences')}>
+			<Text>
+				<PrimaryText>Evidences</PrimaryText>
+				<SecondaryText>Manage all the evidences</SecondaryText>
+			</Text>
+		</Item>
+		{#if $userStore}
+			<Separator />
+			<Item on:SMUI:action={doLogout}>
+				<Text>Logout</Text>
+			</Item>
+		{/if}
+	</List>
+</Menu>
+
 <div id="all-wrapper">
 	<TopAppBar variant="static" color="primary">
 		<Row>
 			<Section>
-				<IconButton class="material-icons">menu</IconButton>
+				<IconButton on:click={() => menu.setOpen(true)} class="material-icons">menu</IconButton>
 				<Title>Judgementor</Title>
 			</Section>
 			<Section align="end" toolbar>
@@ -53,15 +100,9 @@
 			</Section>
 		</Row>
 	</TopAppBar>
-	<nav>
-		<a href="/">Home</a>
-		<a href="/reset-password">Reset Pass</a>
-		<a href="/register">Register</a>
-		<a href="/profile">Profile</a>
-		<a href="/cases/new">Open Case</a>
-		<a href="/evidences">Evidences</a>
-	</nav>
-	<slot />
+	<div class="content-wrapper">
+		<slot />
+	</div>
 </div>
 
 {#if $loadingFullScreenStore}
@@ -71,6 +112,9 @@
 {/if}
 
 <style>
+	.content-wrapper {
+		padding: 20px;
+	}
 	#all-wrapper {
 		width: 800px;
 		max-width: 100%;

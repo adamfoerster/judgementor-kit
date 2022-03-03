@@ -38,7 +38,10 @@
 
 <style>
 	.light-gray {
-		background-color: #ddd;
+		background-color: #fee;
+		padding: 0 20px;
+		box-sizing: border-box;
+		overflow: hidden;
 	}
 </style>
 
@@ -52,10 +55,11 @@
 				getOptionLabel={(option) => (option ? option.email : '')}
 				bind:value={defendant}
 				bind:text={defendantEmail}
+				style="width: 100%;"
 			>
-				<Textfield label="Defendant" bind:value={defendantEmail} variant="outlined" />
+				<Textfield label="Defendant" bind:value={defendantEmail} variant="outlined" style="width: 100%;" />
 			</Autocomplete>
-			<Textfield textarea bind:value={brief} label="Brief" input$maxlength={1000}>
+			<Textfield textarea bind:value={brief} label="Brief" input$maxlength={1000} style="width: 100%;">
 				<HelperText slot="helper">Briefly describe your claim</HelperText>
 				<CharacterCounter slot="internalCounter">0 / 1000</CharacterCounter>
 			</Textfield>
@@ -65,6 +69,4 @@
 		<Evidences bind:evidences={evidences}/>
 	</div>
 {/if}
-<pre>{defendant ? JSON.stringify(defendant) : ''}</pre>
-<pre>{options ? JSON.stringify(options) : ''}</pre>
-<pre>{ JSON.stringify(evidences) }</pre>
+

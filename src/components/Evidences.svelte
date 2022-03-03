@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Label } from '@smui/common';
-	import Button from '@smui/button';
+	import Button, { GroupItem } from '@smui/button';
 	import Textfield from '@smui/textfield';
 	import { TEvidence, createEvidence, getEvidences, removeEvidence } from '$lib/db';
 	import { loadingFullScreenStore, snackbarStore } from '$lib/store';
@@ -60,19 +60,17 @@
 
 <h2>Evidences</h2>
 
-<DataTable stickyHeader table$aria-label="User list">
+<DataTable stickyHeader table$aria-label="User list" style="width: 100%;" >
 	<Head>
 		<Row>
 			<Cell>Description</Cell>
-			<Cell>URL</Cell>
 			<Cell>Actions</Cell>
 		</Row>
 	</Head>
 	<Body>
 		{#each evidences as item (item.id)}
 			<Row>
-				<Cell>{item.description}</Cell>
-				<Cell>{item.url}</Cell>
+				<Cell><a href={item.url}>{item.description}</a></Cell>
 				<Cell
 					><Button on:click={() => askRemoveEvidence(item.id)}>
 						<Label>Remove</Label>
@@ -84,8 +82,8 @@
 </DataTable>
 
 <div class="fields-center">
-	<Textfield variant="outlined" bind:value={description} label="Description" />
-	<Textfield variant="outlined" bind:value={url} label="URL" />
+	<Textfield variant="outlined" bind:value={description} label="Description" style="width: 100%;"/>
+	<Textfield variant="outlined" bind:value={url} label="URL" style="width: 100%;"/>
 </div>
 <div class="center-line">
 	<Button on:click={saveEvidence} variant="raised" disabled={!description || !url}>
