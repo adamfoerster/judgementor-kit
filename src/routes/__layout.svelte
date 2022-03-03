@@ -9,7 +9,7 @@
 	import { loadingFullScreenStore, snackbarStore } from '$lib/store';
 	import { onMount } from 'svelte';
 	import { authStateChecked, doLogout, getProfile, userStore } from '$lib/user';
-	import { goto } from '$app/navigation';
+	import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
 
 	let snackText = '';
 	let snackbarWithClose: SnackbarComponentDev;
@@ -32,6 +32,14 @@
 				snackbarStore.set('');
 			}
 		});
+	});
+
+	beforeNavigate(() => {
+		loadingFullScreenStore.set(true);
+	});
+
+	afterNavigate(() => {
+		loadingFullScreenStore.set(false);
 	});
 
 	const handleGoto = (path: string) => {
