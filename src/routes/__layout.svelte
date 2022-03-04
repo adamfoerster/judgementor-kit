@@ -15,6 +15,7 @@
 	let snackbarWithClose: SnackbarComponentDev;
 	let snackSub;
 	let menu: MenuComponentDev;
+	let adminMenu: MenuComponentDev;
 
 	onMount(async () => {
 		if (localStorage.getItem('supabase.auth.token')) {
@@ -62,7 +63,22 @@
 		<Separator />
 		{#if $userStore}
 			<Item on:SMUI:action={() => handleGoto('/profile')}>
-				<Text>Profile</Text>
+				<Text>
+					<PrimaryText>Profile</PrimaryText>
+					<SecondaryText>Manage your profile, open cases and contracts.</SecondaryText>
+				</Text>
+			</Item>
+			<Item on:SMUI:action={() => handleGoto('/profile')}>
+				<Text>
+					<PrimaryText>Entity</PrimaryText>
+					<SecondaryText>Details of the entity, including bylaws.</SecondaryText>
+				</Text>
+			</Item>
+			<Item on:SMUI:action={() => handleGoto('/entities/new')}>
+				<Text>
+					<PrimaryText>New Entity</PrimaryText>
+					<SecondaryText>Details of the entity, including bylaws.</SecondaryText>
+				</Text>
 			</Item>
 		{:else}
 			<Item on:SMUI:action={() => handleGoto('/reset-password')}>
@@ -72,23 +88,36 @@
 				<Text>Register</Text>
 			</Item>
 		{/if}
-		<Separator />
-		<Item on:SMUI:action={() => handleGoto('/cases/new')}>
-			<Text>
-				<PrimaryText>File a Claim</PrimaryText>
-				<SecondaryText>Create a new case</SecondaryText>
-			</Text>
-		</Item>
-		<Item on:SMUI:action={() => handleGoto('/evidences')}>
-			<Text>
-				<PrimaryText>Evidences</PrimaryText>
-				<SecondaryText>Manage all the evidences</SecondaryText>
-			</Text>
-		</Item>
 		{#if $userStore}
+			<Separator />
+			<Item on:SMUI:action={() => handleGoto('/cases/new')}>
+				<Text>
+					<PrimaryText>File a Claim</PrimaryText>
+					<SecondaryText>Create a new case</SecondaryText>
+				</Text>
+			</Item>
 			<Separator />
 			<Item on:SMUI:action={doLogout}>
 				<Text>Logout</Text>
+			</Item>
+		{/if}
+	</List>
+</Menu>
+
+<Menu bind:this={adminMenu} anchorCorner="TOP_RIGHT">
+	<List>
+		{#if $userStore}
+			<Item on:SMUI:action={() => handleGoto('/entities/new')}>
+				<Text>New Entity</Text>
+			</Item>
+			<Item on:SMUI:action={() => handleGoto('/entities/list')}>
+				<Text>Entities List</Text>
+			</Item>
+			<Item on:SMUI:action={() => handleGoto('/evidences')}>
+				<Text>Evidences</Text>
+			</Item>
+			<Item on:SMUI:action={() => handleGoto('/bylaws')}>
+				<Text>Bylaws</Text>
 			</Item>
 		{/if}
 	</List>
@@ -104,7 +133,11 @@
 			<Section align="end" toolbar>
 				<IconButton class="material-icons" aria-label="Download">file_download</IconButton>
 				<IconButton class="material-icons" aria-label="Print this page">print</IconButton>
-				<IconButton class="material-icons" aria-label="Bookmark this page">bookmark</IconButton>
+				<IconButton
+					on:click={() => adminMenu.setOpen(true)}
+					class="material-icons"
+					aria-label="Bookmark this page">bookmark</IconButton
+				>
 			</Section>
 		</Row>
 	</TopAppBar>

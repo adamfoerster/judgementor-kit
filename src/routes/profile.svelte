@@ -5,6 +5,7 @@
 	import { doSaveProfile, userStore } from '$lib/user';
 	import { get } from 'svelte/store';
 import { onMount } from 'svelte';
+import Entities from '$components/Entities.svelte';
 
 	let username = '';
 	let avatar_url = '';
@@ -57,7 +58,5 @@ import { onMount } from 'svelte';
 			<Label>Save</Label>
 		</Button>
 	</div>
-{:else}
-	<h2>You need to be logged</h2>
-	<a href="/">Home</a>
+	<Entities></Entities>
 {/if}

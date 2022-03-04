@@ -46,7 +46,7 @@
 </style>
 
 {#if loaded}
-	<h1>Create a Claim</h1>
+	<h3>Create a Claim</h3>
 	<p>Plaintiff: {plaintiff?.email}</p>
 	<div class="fields-center">
 		{#if options}

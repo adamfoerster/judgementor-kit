@@ -2,12 +2,13 @@
 	import { Label } from '@smui/common';
 	import Button, { GroupItem } from '@smui/button';
 	import Textfield from '@smui/textfield';
-	import { TEvidence, createEvidence, getEvidences, removeEvidence } from '$lib/db';
+	import { createEvidence, getEvidences, removeEvidence } from '$lib/db';
 	import { loadingFullScreenStore, snackbarStore } from '$lib/store';
 	import { onMount } from 'svelte';
 	import { guardRouteOnlyLogged } from '$lib/user';
 	import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
 	import Dialog, { Title, Content, Actions } from '@smui/dialog';
+	import type { TEvidence } from '$lib/models';
 
 	export let evidences: TEvidence[] = [];
 	let description = '';
@@ -60,7 +61,7 @@
 
 <h2>Evidences</h2>
 
-<DataTable stickyHeader table$aria-label="User list" style="width: 100%;" >
+<DataTable stickyHeader table$aria-label="User list" style="width: 100%;">
 	<Head>
 		<Row>
 			<Cell>Description</Cell>
@@ -70,7 +71,7 @@
 	<Body>
 		{#each evidences as item (item.id)}
 			<Row>
-				<Cell><a href={item.url}>{item.description}</a></Cell>
+				<Cell><a target="_BLANK" href={item.url}>{item.description}</a></Cell>
 				<Cell
 					><Button on:click={() => askRemoveEvidence(item.id)}>
 						<Label>Remove</Label>
@@ -82,8 +83,8 @@
 </DataTable>
 
 <div class="fields-center">
-	<Textfield variant="outlined" bind:value={description} label="Description" style="width: 100%;"/>
-	<Textfield variant="outlined" bind:value={url} label="URL" style="width: 100%;"/>
+	<Textfield variant="outlined" bind:value={description} label="Description" style="width: 100%;" />
+	<Textfield variant="outlined" bind:value={url} label="URL" style="width: 100%;" />
 </div>
 <div class="center-line">
 	<Button on:click={saveEvidence} variant="raised" disabled={!description || !url}>
