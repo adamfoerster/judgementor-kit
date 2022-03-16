@@ -2,6 +2,7 @@
 	import { guardRouteOnlyLogged, getProfiles } from '$lib/user';
 	import Textfield from '@smui/textfield';
 	import Autocomplete from '@smui-extra/autocomplete';
+	import Card from '@smui/card';
 	import { onMount } from 'svelte';
 	import { loadingFullScreenStore } from '$lib/store';
 	import HelperText from '@smui/textfield/helper-text';
@@ -36,15 +37,6 @@
 	$: defendantEmail = defendant ? defendant.email : '';
 </script>
 
-<style>
-	.light-gray {
-		background-color: #fee;
-		padding: 0 20px;
-		box-sizing: border-box;
-		overflow: hidden;
-	}
-</style>
-
 {#if loaded}
 	<h3>Create a Claim</h3>
 	<p>Plaintiff: {plaintiff?.email}</p>
@@ -65,8 +57,8 @@
 			</Textfield>
 		{/if}
 	</div>
-	<div class="light-gray">
+	<Card padded>
 		<Evidences bind:evidences={evidences}/>
-	</div>
+	</Card>
 {/if}
 
