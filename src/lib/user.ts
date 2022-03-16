@@ -1,10 +1,12 @@
 import { goto } from '$app/navigation';
 import { derived, get, writable } from 'svelte/store';
 import supabase from './db';
+import type { TUserProfile } from './models';
 import { snackbarStore } from './store';
 
 export const userStore = writable(null);
 export const authStateChecked = writable(false);
+export const selectedEntityStore = writable<string>(null);
 
 export const guardRouteOnlyLogged = derived(
 	[userStore, authStateChecked],
@@ -67,7 +69,7 @@ export const doRegister = async (email: string, password: string) => {
 	return user;
 };
 
-export const doSaveProfile = async (profile: UserProfile) => {
+export const doSaveProfile = async (profile: TUserProfile) => {
 	const user = get(userStore);
 	let { data: profiles, error } = await supabase.from('profiles').upsert({
 		id: user.id,
@@ -90,6 +92,14 @@ export const getProfile = async (id) => {
 	return profiles[0];
 };
 
+export const getEntitiesByUser = async (user_id) => {
+	const { data, error } = await supabase.from('entity_users').select('*').eq('user_id', user_id);
+	if (error) {
+		console.log(error);
+	}
+	return data.map(({ entity_id }) => entity_id);
+};
+
 export const getProfiles = async () => {
 	const { data: profiles, error } = await supabase.from('profiles').select('*');
 	if (error) {
@@ -97,10 +107,3 @@ export const getProfiles = async () => {
 	}
 	return profiles;
 };
-
-export interface UserProfile {
-	id?: string;
-	email?: string;
-	username?: string;
-	avatar_url?: string;
-}

@@ -8,7 +8,7 @@
 	import Button, { Label } from '@smui/button';
 	import { loadingFullScreenStore, snackbarStore } from '$lib/store';
 	import { onMount } from 'svelte';
-	import { authStateChecked, doLogout, getProfile, userStore } from '$lib/user';
+	import { authStateChecked, doLogout, getEntitiesByUser, getProfile, selectedEntityStore, userStore } from '$lib/user';
 	import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
 
 	let snackText = '';
@@ -21,7 +21,13 @@
 		if (localStorage.getItem('supabase.auth.token')) {
 			const user = JSON.parse(localStorage.getItem('supabase.auth.token')).currentSession.user;
 			const profile = await getProfile(user.id);
-			userStore.set({ ...user, profile });
+			const entities = await getEntitiesByUser(user.id);
+			userStore.set({ ...user, profile, entities });
+			if (!entities || !entities.length) {
+				snackbarStore.set("You are not associated to an Entity. The app won't function properly.");
+			} else {
+				selectedEntityStore.set(entities[0]);
+			}
 		}
 		authStateChecked.set(true);
 

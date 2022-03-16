@@ -19,3 +19,11 @@ export interface TBylaws {
 	entity_id?: string;
 	revision?: number;
 }
+
+export interface TUserProfile {
+	id?: string;
+	email?: string;
+	username?: string;
+	avatar_url?: string;
+	entities?: string[];
+}
