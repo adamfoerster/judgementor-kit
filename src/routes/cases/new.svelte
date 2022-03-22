@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { guardRouteOnlyLogged, getProfiles, selectedEntityStore } from '$lib/user';
+	import { guardRouteOnlyLogged, getProfiles, selectedEntityStore, userStore } from '$lib/user';
 	import Textfield from '@smui/textfield';
 	import Autocomplete from '@smui-extra/autocomplete';
 	import Card from '@smui/card';
@@ -9,6 +9,7 @@
 	import CharacterCounter from '@smui/textfield/character-counter';
 	import Evidences from '$components/Evidences.svelte';
 	import { get } from 'svelte/store';
+	import Entity from '$components/Entity.svelte';
 
 	let defendant;
 	let defendantEmail = '';
@@ -29,7 +30,9 @@
 			loadingFullScreenStore.set(false);
 		});
 		options = await getProfiles();
-		entity_id = get(selectedEntityStore);
+		entity_id = await get(selectedEntityStore);
+		const user = await get(userStore);
+		console.log(user);
 
 		// ).filter((profile) => {
 		// 	console.log(profile)
@@ -72,7 +75,17 @@
 				<HelperText slot="helper">Briefly describe your claim</HelperText>
 				<CharacterCounter slot="internalCounter">0 / 1000</CharacterCounter>
 			</Textfield>
-			<Textfield textarea bind:value={bylaws_ref} label="Bylaws REF#" style="width: 100%;">
+			{#if entity_id}
+			<Card padded>
+				<Entity {entity_id} />
+			</Card>
+			{/if}
+			<Textfield
+				bind:value={bylaws_ref}
+				label="Bylaws REF#"
+				style="width: 100%;"
+				variant="outlined"
+			>
 				<HelperText slot="helper"
 					>Add the reference to the article in the bylaws of your entity that suports your claim.</HelperText
 				>
