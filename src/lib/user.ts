@@ -4,7 +4,7 @@ import supabase from './db';
 import type { TUserProfile } from './models';
 import { snackbarStore } from './store';
 
-export const userStore = writable(null);
+export const userStore = writable<TUserProfile>(null);
 export const authStateChecked = writable(false);
 export const selectedEntityStore = writable<string>(null);
 

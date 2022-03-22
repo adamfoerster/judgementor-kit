@@ -94,7 +94,6 @@
 		<Label>New</Label>
 	</Button>
 </div>
-<pre>{evidences}</pre>
 
 <Dialog bind:open={ask} aria-labelledby="simple-title" aria-describedby="simple-content">
 	<!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
